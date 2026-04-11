@@ -505,7 +505,7 @@ async function removeTag(tag){
 
 // EDITOR
 function openNote(id){
-  currentNote=notes.find(n=>n.id===id);
+  currentNote=notes.find(n=>String(n.id)===String(id));
   if(!currentNote) return;
   document.getElementById('empty-editor').style.display='none';
   document.getElementById('note-title').style.display='block';
