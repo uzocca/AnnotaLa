@@ -153,11 +153,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-heigh
 .modal-confirm:hover{opacity:0.85;}
 
 @media(max-width:600px){
-  .sidebar{width:100%;position:absolute;z-index:10;height:100%;}
+  .sidebar{width:100%;position:absolute;z-index:10;height:calc(100% - 52px);}
   .sidebar.hidden{display:none;}
   .editor-inner{padding:1.5rem 1.25rem;}
   #note-title{font-size:1.5rem;}
+  .btn-back{display:flex !important;}
 }
+.btn-back{display:none;background:none;border:none;cursor:pointer;color:var(--text-muted);padding:0.3rem 0.6rem;border-radius:6px;font-size:0.85rem;font-family:var(--font-ui);align-items:center;gap:0.3rem;}
+.btn-back:hover{color:var(--text);background:var(--hover);}
 </style>
 </head>
 <body>
@@ -221,6 +224,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-heigh
           <div class="tags-editor" id="tags-editor"></div>
         </div>
         <div style="display:flex;align-items:center;gap:0.5rem;">
+          <button class="btn-back" onclick="showSidebar()">← Note</button>
           <span class="editor-status" id="save-status">Salvato</span>
           <div class="export-wrapper">
             <button class="btn-icon" onclick="toggleExportMenu()">↓ Esporta</button>
@@ -507,6 +511,8 @@ async function removeTag(tag){
 function openNote(id){
   currentNote=notes.find(n=>String(n.id)===String(id));
   if(!currentNote) return;
+  // mobile: hide sidebar, show editor
+  if(window.innerWidth<=600) document.getElementById('sidebar').classList.add('hidden');
   document.getElementById('empty-editor').style.display='none';
   document.getElementById('note-title').style.display='block';
   document.getElementById('note-content').style.display='block';
@@ -572,6 +578,9 @@ async function deleteNote(){
   await sb.from('notes').delete().eq('id',currentNote.id);
   notes=notes.filter(n=>n.id!==currentNote.id);
   clearEditor();renderAll();
+}
+function showSidebar(){
+  document.getElementById('sidebar').classList.remove('hidden');
 }
 function setSaveStatus(t){document.getElementById('save-status').textContent=t;}
 
