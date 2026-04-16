@@ -311,6 +311,7 @@ async function showApp(){
   document.getElementById('app-screen').style.display='flex';
   await loadFolders();
   await loadNotes();
+  if(window.innerWidth<=600) clearEditor();
 }
 function toggleAuthMode(){
   isRegister=!isRegister;
@@ -581,6 +582,7 @@ async function deleteNote(){
 }
 function showSidebar(){
   document.getElementById('sidebar').classList.remove('hidden');
+  clearEditor();
 }
 function setSaveStatus(t){document.getElementById('save-status').textContent=t;}
 
